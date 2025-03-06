@@ -1,0 +1,7 @@
+[build]
+  base = "apps/condo"
+  command = "yarn build:frontend"
+  publish = "out"
+
+[build.environment]
+  GIT_SUBMODULE_STRATEGY = "none"
