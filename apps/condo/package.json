@@ -2,6 +2,9 @@
   "name": "@app/condo",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": "16.20.0"
+  },
   "scripts": {
     "test": "mkdirp dist/admin && jest --unhandled-rejections=strict",
     "prepare": "node ./bin/prepare.js",
