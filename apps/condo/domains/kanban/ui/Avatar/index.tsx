@@ -50,9 +50,11 @@ const Avatar: React.FC<AvatarProps> = ({ className, avatarUrl, name, size = 32, 
     }
 
     return (
-        <Letter color={getColorFromName(name)} {...sharedProps}>
-            <span>{name.charAt(0)}</span>
-        </Letter>
+        <>
+            {name && <Letter color={getColorFromName(name)} {...sharedProps}>
+                <span>{name.charAt(0)}</span>
+            </Letter>}
+        </>
     )
 }
 

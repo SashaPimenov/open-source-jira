@@ -16,6 +16,7 @@ import ProjectBoardTicketDetails from '@condo/domains/kanban/components/TicketDe
 import ProjectTicketSearch from '@condo/domains/kanban/components/TicketSearch/TicketSearch'
 
 import { useGetTicketsQuery } from '../../gql'
+import { SortTicketsBy } from '../../schema'
 
 export const KanbanPageContent = ({ tickets, refetchAllTickets }) => {
     const router = useRouter()
@@ -67,14 +68,30 @@ const KanbanPage: PageComponentType = () => {
     const intl = useIntl()
 
     const kanbanTitle = intl.formatMessage({ id: 'kanban.title.description' })
-
     const {
         loading: isTicketsFetching,
         data: ticketsData,
         refetch: refetchAllTickets,
     } = useGetTicketsQuery({
         variables: {
-            where: { organization: { id: organization.id } },
+            where: {
+                organization: { id: organization.id },
+                // AND: [
+                //     {
+                //         OR: [
+                //             { 
+                //                 status: { id_not: 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f' },
+                //             },
+                //             {
+                //                 status: { id: 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f' },
+                //                 updatedAt_gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                //             },
+                //         ],
+                //     },
+                // ],
+            },
+            sortBy: SortTicketsBy.CreatedAtDesc,
+            first: 50,
         },
         fetchPolicy: 'network-only',
     })
