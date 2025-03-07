@@ -161,11 +161,12 @@ export const useCreateOrganizationModalForm = ({ onFinish }: IUseCreateOrganizat
             ErrorToFormFieldMsgMapping={ErrorToFormFieldMsgMapping}
             showCancelButton={false}
             validateTrigger={MODAL_VALIDATE_TRIGGERS}
+            initialValues={{ tin: '000' }}
         >
             <Form.Item name='type' style={ORGANIZATION_TYPE_FORM_ITEM_STYLES}>
-                <RadioGroup defaultValue={MANAGING_COMPANY_TYPE}>
+                <RadioGroup defaultValue={SERVICE_PROVIDER_TYPE}>
                     <Space direction='vertical' size={16}>
-                        <Radio value={MANAGING_COMPANY_TYPE} label={ManagingCompanyMessage}/>
+                        <Radio disabled value={MANAGING_COMPANY_TYPE} label={ManagingCompanyMessage}/>
                         <Radio value={SERVICE_PROVIDER_TYPE} label={ServiceProviderMessage}/>
                     </Space>
                 </RadioGroup>
@@ -175,7 +176,7 @@ export const useCreateOrganizationModalForm = ({ onFinish }: IUseCreateOrganizat
                     placeholder={CreateOrganizationPlaceholder}
                 />
             </Form.Item>
-            <Form.Item name='tin' style={FORM_ITEM_STYLES} label={InnMessage} rules={validators.tin} validateFirst>
+            <Form.Item hidden name='tin' style={FORM_ITEM_STYLES} label={InnMessage} rules={validators.tin} validateFirst>
                 <Input />
             </Form.Item>
         </BaseModalForm>

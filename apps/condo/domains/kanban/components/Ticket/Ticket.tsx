@@ -88,7 +88,7 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                 >
                     <Ticket isbeingdragged={snapshot.isDragging && !snapshot.isDropAnimating ? 'true' : undefined}>
                         <Title>
-                            {ticket.title || `№${ticket.number} / ${ticket.classifier.category.name} 🠖 ${ticket.classifier.place.name}`}
+                            {ticket.title || `№${ticket.number} / ${ticket.classifier?.category?.name} 🠖 ${ticket.classifier?.place?.name}`}
                         </Title>
                         <Bottom>
                             <Icons>

@@ -136,7 +136,12 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
         },
     })
     
-    const employees = useMemo(() => employeesData?.filter(Boolean) || [], [employeesData])
+    const users = useMemo(() => {
+        return employeesData?.filter(Boolean).map(employee => ({
+            name: employee.user?.name || '',
+            id: employee.user?.id || '',
+        })) || []
+    }, [employeesData])
     
     const { objs: files, refetch: refetchTicketFiles } = TicketFile.useObjects({
         where: { ticket: { id: ticket ? ticket.id : null } },
@@ -175,7 +180,7 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
                 </Left>
                 <Right>
                     <Status ticket={ticket} ticketStatuses={statuses} updateTicket={updateTicketAction}/>
-                    <AssigneesExecutor ticket={ticket} updateTicket={updateTicketAction} employees={employees} />
+                    <AssigneesExecutor ticket={ticket} updateTicket={updateTicketAction} users={users} />
                     <Priority ticket={ticket} updateTicket={updateTicketAction} />
                     <Deadline ticket={ticket} updateTicket={updateTicketAction} />
                     <Dates ticket={ticket} /> 

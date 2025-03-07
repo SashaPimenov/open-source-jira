@@ -1,4 +1,0 @@
-[build]
-  command = "yarn build:frontend"
-  publish = "apps/condo/.next"
-  environment = { GIT_SUBMODULE_STRATEGY = "none" }
