@@ -1,190 +1,47 @@
 /** @jsx jsx */
 import { jsx } from '@emotion/react'
-import { Col, Form, Row } from 'antd'
-import get from 'lodash/get'
-import { useRouter } from 'next/router'
-import { Rule } from 'rc-field-form/lib/interface'
-import React, { useEffect } from 'react'
+import { Typography, Row, Col } from 'antd'
+import Head from 'next/head'
+import React from 'react'
 
-import { useApolloClient } from '@open-condo/next/apollo'
 import { useIntl } from '@open-condo/next/intl'
-import { useOrganization } from '@open-condo/next/organization'
-import { ActionBar, Button } from '@open-condo/ui'
 
-import Input from '@condo/domains/common/components/antd/Input'
-import { FormWithAction } from '@condo/domains/common/components/containers/FormList'
-import LoadingOrErrorPage from '@condo/domains/common/components/containers/LoadingOrErrorPage'
-import { PhoneInput } from '@condo/domains/common/components/PhoneInput'
-import { useValidations } from '@condo/domains/common/hooks/useValidations'
-import { EmployeeRoleSelect } from '@condo/domains/organization/components/EmployeeRoleSelect'
+import { PageContent, PageWrapper } from '@condo/domains/common/components/containers/BaseLayout'
+import { PageComponentType } from '@condo/domains/common/types'
+import { CreateEmployeeForm } from '@condo/domains/organization/components/EmployeeForm/CreateEmployeeForm'
+import { OrganizationRequired } from '@condo/domains/organization/components/OrganizationRequired'
 import {
-    OrganizationEmployeeRole,
-    useInviteNewOrganizationEmployee,
-} from '@condo/domains/organization/utils/clientSchema'
-import {
-    ClassifiersQueryRemote,
-} from '@condo/domains/ticket/utils/clientSchema/classifierSearch'
+    EmployeesReadAndInvitePermissionRequired,
+} from '@condo/domains/organization/components/PageAccess'
 
 
-const INPUT_LAYOUT_PROPS = {
-    labelCol: {
-        span: 8,
-    },
-    wrapperCol: {
-        span: 14,
-    },
-}
-
-export const CreateEmployeeForm: React.FC = () => {
+const CreateEmployeePage: PageComponentType = () => {
     const intl = useIntl()
-
-    const InviteEmployeeLabel = intl.formatMessage({ id: 'employee.InviteEmployee' })
-    const FullNameLabel = intl.formatMessage({ id: 'pages.auth.register.field.Name' })
-    const FullNamePlaceholder = intl.formatMessage({ id: 'field.FullName' })
-    const FullNameRequiredMessage = intl.formatMessage({ id: 'employee.FullName.requiredError' })
-    const FullNameInvalidCharMessage = intl.formatMessage({ id:'field.FullName.invalidChar' })
-    const PhoneLabel = intl.formatMessage({ id: 'Phone' })
-    const RoleLabel = intl.formatMessage({ id: 'employee.Role' })
-    const ExamplePhoneMsg = intl.formatMessage({ id: 'example.Phone' })
-    const ServerErrorMsg = intl.formatMessage({ id: 'ServerError' })
-
-    const classifiersLoader = new ClassifiersQueryRemote(useApolloClient())
-    const { organization } = useOrganization()
-    const router = useRouter()
-
-    const organizationId = get(organization, 'id', null)
-
-    const { objs: employeeRoles, loading, error } = OrganizationEmployeeRole.useObjects(
-        { where: { organization: { id: organizationId } } }
-    )
-
-    const { changeMessage, requiredValidator, emailValidator, phoneValidator, trimValidator, specCharValidator } = useValidations()
-
-    const validations: { [key: string]: Rule[] } = {
-        phone: [requiredValidator, phoneValidator],
-        email: [emailValidator],
-        name: [
-            changeMessage(trimValidator, FullNameRequiredMessage),
-            changeMessage(specCharValidator, FullNameInvalidCharMessage),
-        ],
-    }
-
-    const action = useInviteNewOrganizationEmployee({ organization: { id: organization.id } }, () => {
-        router.push('/employee/')
-    })
-
-
-    useEffect(()=> {
-        classifiersLoader.init()
-        return () => classifiersLoader.clear()
-    }, [])
-    if (loading || error)
-        return <LoadingOrErrorPage title={InviteEmployeeLabel} loading={loading} error={error ? ServerErrorMsg : null} />
-
-    const initialValues = {
-        role: employeeRoles.find(role => role.nameNonLocalized === 'employee.role.Administrator.name').id,
-        hasAllSpecializations: true,
-    }
-
+    const PageTitleMsg = intl.formatMessage({ id: 'employee.AddEmployee' })
+        
     return (
-        <FormWithAction
-            action={action}
-            initialValues={initialValues}
-            layout='horizontal'
-            validateTrigger={['onBlur', 'onSubmit']}
-            colon={false}
-            formValuesToMutationDataPreprocessor={(values) => {
-                // TODO(Dimitree): delete after useInviteNewOrganizationEmployee move to OrganizationEmployee
-                const role = get(values, 'role')
-                const specializations = get(values, 'specializations')
-
-                if (specializations) {
-                    values.specializations = specializations.map(specId => ({ id: specId }))
-                }
-
-                if (role) {
-                    values.role = { id: String(role) }
-                }
-                return values
-            }}
-        >
-            {
-                ({ handleSave, isLoading, form }) => {
-                    return (
-                        <>
-                            <Row>
-                                <Col md={14} xs={24}>
-                                    <Row gutter={[0, 60]}>
-                                        <Col span={24}>
-                                            <Row gutter={[0, 40]}>
-                                                <Col span={24}>
-                                                    <Form.Item hidden name='role' label={RoleLabel} {...INPUT_LAYOUT_PROPS} labelAlign='left' >
-                                                        <EmployeeRoleSelect
-                                                            employeeRoles={employeeRoles}
-                                                        />
-                                                    </Form.Item>
-                                                </Col>
-                                                <Col span={24}>
-                                                    <Form.Item
-                                                        name='name'
-                                                        label={FullNameLabel}
-                                                        {...INPUT_LAYOUT_PROPS}
-                                                        labelAlign='left'
-                                                        required
-                                                        validateFirst
-                                                        rules={validations.name}
-                                                    >
-                                                        <Input placeholder={FullNamePlaceholder} />
-                                                    </Form.Item>
-                                                </Col>
-                                                
-                                                <Col span={24}>
-                                                    <Form.Item
-                                                        name='phone'
-                                                        label={PhoneLabel}
-                                                        labelAlign='left'
-                                                        required
-                                                        validateFirst
-                                                        rules={validations.phone}
-                                                        {...INPUT_LAYOUT_PROPS}
-                                                    >
-                                                        <PhoneInput placeholder={ExamplePhoneMsg} block />
-                                                    </Form.Item>
-                                                </Col>
-                                               
-                                            </Row>
-                                        </Col>
-                                        <Col span={24}>
-                                            <Form.Item noStyle dependencies={['phone']}>
-                                                {
-                                                    ({ getFieldsValue }) => {
-                                                        const { phone } = getFieldsValue(['phone'])
-                                                        return (
-                                                            <ActionBar
-                                                                actions={[
-                                                                    <Button
-                                                                        key='submit'
-                                                                        onClick={handleSave}
-                                                                        type='primary'
-                                                                        loading={isLoading}
-                                                                        disabled={!phone}
-                                                                    >
-                                                                        {InviteEmployeeLabel}
-                                                                    </Button>,
-                                                                ]}
-                                                            />
-                                                        )
-                                                    }
-                                                }
-                                            </Form.Item>
-                                        </Col>
-                                    </Row>
-                                </Col>
-                            </Row>
-                        </>
-                    )
-                }
-            }
-        </FormWithAction>
+        <>
+            <Head>
+                <title>{PageTitleMsg}</title>
+            </Head>
+            <PageWrapper>
+                <OrganizationRequired>
+                    <PageContent>
+                        <Row gutter={[12, 40]}>
+                            <Col span={24}>
+                                <Typography.Title level={1} style={{ margin: 0 }}>{PageTitleMsg}</Typography.Title>
+                            </Col>
+                            <Col span={24}>
+                                <CreateEmployeeForm />
+                            </Col>
+                        </Row>
+                    </PageContent>
+                </OrganizationRequired>
+            </PageWrapper>
+        </>
     )
 }
+
+CreateEmployeePage.requiredAccess = EmployeesReadAndInvitePermissionRequired
+
+export default CreateEmployeePage
