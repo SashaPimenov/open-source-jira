@@ -88,7 +88,7 @@ const ProjectBoardTicketDetailsFiles = ({ ticket, files, refetchTicketFiles }) =
 
     const uploadFiles = useMemo(() => files.map(({ file }) => {
         const originalUrl = file.publicUrl
-        const newUrl = originalUrl.replace('https://condo.d.doma.ai', process.env.SERVER_URL)
+        const newUrl = originalUrl.replace('https://condo.d.doma.ai', 'https://jira-945r.onrender.com')
 
         return {
             uid: file.id,
