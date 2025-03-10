@@ -29,7 +29,7 @@ import { useGetTicketsQuery } from '../../../../gql'
 import { SortTicketsBy } from '../../../../schema'
 import { color } from '../../styles'
 import { TicketTypeIcon } from '../../ui'
-import { formatDefferedDate, sortByNewest, truncateDescription } from '../../utils'
+import { formatDefferedDate, sortByNewest, ticketHasDeferUntil, truncateDescription } from '../../utils'
 
 const ProjectTicketSearch = () => {
     const intl = useIntl()
@@ -119,7 +119,7 @@ const ProjectTicketSearch = () => {
                             <TicketTypeColor $color={ticket.status.colors.primary}>
                                 {ticket.status.name}
                             </TicketTypeColor>
-                            {ticket.deferredUntil && ` ${formatDefferedDate(BeforeTitle, ticket.deferredUntil)}`} / {renderAssignees(ticket.assignee?.name, ticket.executor?.name)}
+                            {ticketHasDeferUntil(ticket) && ` ${formatDefferedDate(BeforeTitle, ticket.deferredUntil)}`} / {renderAssignees(ticket.assignee?.name, ticket.executor?.name)}
                         </TicketTypeId>
                     </TicketData>
                     <Avatars>

@@ -49,7 +49,7 @@ const ProjectBoardFilters = ({ tickets, defaultFilters, filters, mergeFilters })
     const areFiltersCleared = userIds.length === 0 && !myOnly
 
     if (employeesLoading) { 
-        return <StyledSpinner />
+        return <StyledSpinner size={26} />
     }
 
     return (

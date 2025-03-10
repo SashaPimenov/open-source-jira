@@ -52,3 +52,11 @@ export function truncateDescription (details: string, maxLength = 35): string {
 
     return `${truncated}...`
 }
+
+export function ticketHasDeferUntil (ticket): boolean {
+    if (ticket.deferredUntil && ticket.status.id === 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f') {
+        return true
+    } else {
+        return false
+    }
+}

@@ -5,7 +5,7 @@ import styled, { css } from 'styled-components'
 
 import { color, font, mixin } from '../../styles'
 import { Avatar, TicketPriorityIcon, TicketTypeIcon } from '../../ui'
-import { formatDefferedDate, truncateDescription } from '../../utils'
+import { formatDefferedDate, ticketHasDeferUntil, truncateDescription } from '../../utils'
 
 const TicketLink = styled.div`
   display: block;
@@ -78,6 +78,7 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
     const handleOpenModal = () => {
         router.push(`?ticketId=${ticket.id}`, undefined, { shallow: true })
     }
+
     return (
         <Draggable draggableId={ticket.id.toString()} index={index}>
             {(provided, snapshot) => (
@@ -95,7 +96,7 @@ const ProjectBoardListTicket = ({ ticket, index }) => {
                             <Icons>
                                 <TicketTypeIcon type={ticket.customClassifier || 'task'} size='medium'/>
                                 <TicketPriorityIcon priority={ticket.priority} size='medium'/>
-                                {ticket.deferredUntil && <BeforeText>{formatDefferedDate(BeforeTitle, ticket.deferredUntil)}</BeforeText>}
+                                {ticketHasDeferUntil(ticket) && <BeforeText>{formatDefferedDate(BeforeTitle, ticket.deferredUntil)}</BeforeText>}
                             </Icons>
                             <Assignees>
                                 <AssigneeAvatar

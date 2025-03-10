@@ -76,17 +76,13 @@ const KanbanPage: PageComponentType = () => {
         variables: {
             where: {
                 organization: { id: organization.id },
-                // AND: [
+                // OR: [
                 //     {
-                //         OR: [
-                //             { 
-                //                 status: { id_not: 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f' },
-                //             },
-                //             {
-                //                 status: { id: 'c14a58e0-6b5d-4ec2-b91c-980a90509c7f' },
-                //                 updatedAt_gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-                //             },
-                //         ],
+                //         status: { id_not: 'f0fa0093-8d86-4e69-ae1a-70a2914da82f' },
+                //     },
+                //     {
+                //         status: { id: 'f0fa0093-8d86-4e69-ae1a-70a2914da82f' },
+                //         updatedAt_gte: new Date(Date.now()).toISOString(),
                 //     },
                 // ],
             },

@@ -24,7 +24,6 @@ import Type from './Type'
 
 import { useGetTicketByIdQuery, useGetTicketCommentsQuery, useGetTicketStatusesQuery, useUpdateTicketMutation } from '../../../../gql'
 import LoadingOrErrorPage from '../../../common/components/containers/LoadingOrErrorPage'
-import { useNotificationMessages } from '../../../common/hooks/useNotificationMessages'
 import { OrganizationEmployee } from '../../../organization/utils/clientSchema'
 import { usePollTicketComments } from '../../../ticket/hooks/usePollTicketComments'
 import { TicketFile } from '../../../ticket/utils/clientSchema'
@@ -61,7 +60,6 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
     const { query } = useRouter()
     const { organization } = useOrganization()
     const intl = useIntl()
-    const { getSuccessfulChangeNotification } = useNotificationMessages()
     const ErrorTitle = intl.formatMessage({ id: 'ErrorOccurred' })
     const { ticketId } = query as { ticketId: string }
 
@@ -107,7 +105,6 @@ const ProjectBoardTicketDetails = ({ handleCloseModals, refetchTicketsBoard }) =
         onCompleted: async () => {
             await refetchTicket()
             await refetchTicketsBoard()
-            notification.success(getSuccessfulChangeNotification())
         },
         onError: async () => {
             notification.error({ message: ErrorTitle })
