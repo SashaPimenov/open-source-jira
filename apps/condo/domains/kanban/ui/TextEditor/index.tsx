@@ -144,7 +144,7 @@ const TextEditor: React.FC<IProps & ReactQuillProps> = ({ action, ticketId, valu
                     const finalWidth = width > MAX_IMAGE_WIDTH ? '80%' : width
                     const finalHeight = height > MAX_IMAGE_HEIGHT ? '20%' : height
                     const originalUrl = dbFile.file.publicUrl
-                    const newUrl = originalUrl.replace('https://condo.d.doma.ai', 'https://jira-945r.onrender.com')
+                    const newUrl = originalUrl.replace('https://condo.d.doma.ai', '')
                     quill.insertEmbed(range.index, 'image', newUrl, 'user')
                     quill.formatText(range.index, 1, { width: finalWidth, height: finalHeight })
                     quill.setSelection({ index: range.index + 1, length: 0 })
