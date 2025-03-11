@@ -3185,7 +3185,7 @@
   "tour.step.createPropertyMap.todo.description": "Шахматка нужна, чтобы получать заявки от конкретных квартир. Чтобы добавить шахматку, нужно знать количество помещений, подъездов и этажей в доме.",
   "tour.step.createPropertyMap.todo.title": "Создайте шахматку",
   "tour.step.createTicket.completed.linkTitle": "Добавить заявку",
-  "tour.step.createTicket.completed.title": "Вы создали заявку",
+  "tour.step.createTicket.completed.title": "Вы создали задачу",
   "tour.step.createTicket.todo.description": "На ее примере вы увидите, как выглядит диспетчерская и форма заявки. Рекомендуем перенести на платформу реальную заявку, поскольку их нельзя удалять.",
   "tour.step.createTicket.todo.title": "Создайте заявку",
   "tour.step.disabledTooltip.completePreviousSteps": "Выполните предыдущие шаги, чтобы разблокировать задачу",
